@@ -4,12 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Band Giffy API</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>Giffy API</title>
 </head>
 <body>
-    <h1>Band</h1>
-    <button>Band</button>
-
+    <div class="buttonControl"></div>
+    <div class="addInterest"></div>
+    <br>
+    <div class="putGifsHere"></div>
     
+<script>
+$(document).ready(function(){
+
+var interests = ['Music', 'Language', 'Batmetal', 'Marvel', 'DC', 'Joss Whedon', 'Firefly', 'Codeing', 'Technology', 'Marching Band'];
+
+$.each(interests, function(index, value){
+    $(".buttonControl").append("<button class=" + value+ ">" + value + "</button>");
+});
+
+var apiKey = '341brSZeNdOBupfirSPMM0EhINDwg7tj';
+var rating = 'g';
+var limit = 10;
+var queryURL = "http://api.giphy.com/v1/gifs/search?q=ryan+gosling&api_key=" + apiKey + "&limit=" + limit;
+
+$.ajax({
+  url: queryURL,
+  method: "GET"
+}).then(function(response) {
+  console.log(response);
+});
+
+
+});
+</script>
 </body>
 </html>
