@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./assets/css/reset.css"></script>
     <title>Giffy API</title>
     <style>
         img{
@@ -15,8 +16,9 @@
 </head>
 <body>
     <div class="buttonControl"></div>
-    <div class="addInterest"></div>
+    <div class="addInterest"><input type="text" id="extraInterest"><button id="addInterest">Add interest</button></div>
     <br>
+    <div class="interestPressed"></div>
     <div class="put-gifs-here"></div>
     
 <script>
@@ -25,32 +27,46 @@ $(document).ready(function(){
     var interests = ['Music', 'Language', 'Batmetal', 'Marvel', 'DC', 'Joss Whedon', 'Firefly', 'Codeing', 'Technology', 'Marching Band'];
 
     $.each(interests, function(index, value){
-        $(".buttonControl").append("<button class=" + value+ ">" + value + "</button>");
+        var interestButton = value.split(' ').join('');
+        $(".buttonControl").append("<button class='interest' '" + interestButton + "'>" + value + "</button>");
     });
 
-    $("button").on("click",function(searchResults){
-        
+    $(".interest").on("click",function(searchResults){
+        $(".put-gifs-here").empty();
+        $(".interestPressed").empty();
+        var interestSelected = $(this).attr("class");
+        $(".interestPressed").text(interestSelected);
+        console.log(interestSelected);
+        var searchResults = interestSelected.split(' ').join('+');
+        var apiKey = '341brSZeNdOBupfirSPMM0EhINDwg7tj';
+        var rating = 'pg-13';
+        var limit = 10;
+        var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=" + apiKey + "&q=" + searchResults + "&limit=" + limit + "&offset=0&rating=" + rating + "&lang=en";
 
-            var searchResults = $(this).attr("class");
-            var apiKey = '341brSZeNdOBupfirSPMM0EhINDwg7tj';
-            var rating = 'pg';
-            var limit = 10;
-
-            var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=" + apiKey + "&q=" + searchResults + "&limit=" + limit + "&offset=0&rating=" + rating + "&lang=en";
-
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function(response) {
-                for (var i=0; i<10; i++){
-                    var imgArray = response.data;
-                    console.log(response.data);
-                    var imageUrl = imgArray[i].images.downsized_small.mp4;
-                    $(".put-gifs-here").append("<img " + "src=" + imageUrl + " />");
-                }
-            });
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function(response) {
+            for (var i=0; i<10; i++){
+                var imgArray = response.data;
+                var imageUrl = imgArray[i].images.downsized_small.mp4;
+                $(".put-gifs-here").append("<img " + "src=" + imageUrl + " />");
+            }
+        });
         });
 
+    
+
+    function addInterest() {
+        var extraInterest = $("#extraInterest").val();
+        interests.push(extraInterest);
+        $("<button class='interest' '" + extraInterest + "'>" + extraInterest + "</button>").appendTo(".buttonControl");
+    }
+
+    $("#addInterest").on("click", function() {
+        addInterest();
+    })
+    
         
 
     
