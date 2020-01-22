@@ -6,34 +6,54 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>Giffy API</title>
+    <style>
+        img{
+            height: 222pt;
+        }
+    
+    </style>
 </head>
 <body>
     <div class="buttonControl"></div>
     <div class="addInterest"></div>
     <br>
-    <div class="putGifsHere"></div>
+    <div class="put-gifs-here"></div>
     
 <script>
 $(document).ready(function(){
 
-var interests = ['Music', 'Language', 'Batmetal', 'Marvel', 'DC', 'Joss Whedon', 'Firefly', 'Codeing', 'Technology', 'Marching Band'];
+    var interests = ['Music', 'Language', 'Batmetal', 'Marvel', 'DC', 'Joss Whedon', 'Firefly', 'Codeing', 'Technology', 'Marching Band'];
 
-$.each(interests, function(index, value){
-    $(".buttonControl").append("<button class=" + value+ ">" + value + "</button>");
-});
+    $.each(interests, function(index, value){
+        $(".buttonControl").append("<button class=" + value+ ">" + value + "</button>");
+    });
 
-var apiKey = '341brSZeNdOBupfirSPMM0EhINDwg7tj';
-var rating = 'g';
-var limit = 10;
-var queryURL = "http://api.giphy.com/v1/gifs/search?q=ryan+gosling&api_key=" + apiKey + "&limit=" + limit;
+    $("button").on("click",function(searchResults){
+        
 
-$.ajax({
-  url: queryURL,
-  method: "GET"
-}).then(function(response) {
-  console.log(response);
-});
+            var searchResults = $(this).attr("class");
+            var apiKey = '341brSZeNdOBupfirSPMM0EhINDwg7tj';
+            var rating = 'pg';
+            var limit = 10;
 
+            var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=" + apiKey + "&q=" + searchResults + "&limit=" + limit + "&offset=0&rating=" + rating + "&lang=en";
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function(response) {
+                for (var i=0; i<10; i++){
+                    var imgArray = response.data;
+                    console.log(response.data);
+                    var imageUrl = imgArray[i].images.downsized_small.mp4;
+                    $(".put-gifs-here").append("<img " + "src=" + imageUrl + " />");
+                }
+            });
+        });
+
+        
+
+    
 
 });
 </script>
