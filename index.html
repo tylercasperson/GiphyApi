@@ -6,12 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="./assets/css/reset.css"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>Giffy API</title>
     <style>
-        img{
-            height: 222pt;
+        body{
+            display: flex;
+            flex-wrap: wrap;
         }
-    
+        img{
+            width: 300pt;
+        }
+        .gifCard{
+            width: 300pt;
+        }
     </style>
 </head>
 <body>
@@ -19,12 +26,13 @@
     <div class="addInterest"><input type="text" id="extraInterest"><button id="addInterest">Add interest</button></div>
     <br>
     <div class="interestPressed"></div>
+    <br>
     <div class="put-gifs-here"></div>
     
 <script>
 $(document).ready(function(){
 
-    var interests = ['Music', 'Language', 'Batmetal', 'Marvel', 'DC', 'Spiderverse', 'Joss Whedon', 'Firefly', 'Codeing', 'Technology', 'Marching Band', 'Music', 'Percussion', 'Space', 'Ocean', 'Analytics', 'Innovation'];
+    var interests = ['Music', 'Language', 'Batmetal', 'Marvel', 'DC', 'Spiderverse', 'Joss Whedon', 'Sword Art Online', 'Firefly', 'Codeing', 'Technology', 'Marching Band', 'Music', 'Percussion', 'Symphony', 'Lacrose', 'Atalatal', 'Space', 'Ocean', 'Analytics', 'Innovation', 'Puzzle'];
 
     $.each(interests, function(index, value){
         var interestButton = value.split(' ').join('');
@@ -40,6 +48,9 @@ $(document).ready(function(){
     $("#addInterest").on("click", function() {
         addInterest();
     })
+
+
+ 
 
     $(".buttonControl").children().on("click",function(){
         $(".put-gifs-here").empty();
@@ -63,9 +74,22 @@ $(document).ready(function(){
                 var stillPicture = imgArray[i].images.fixed_height_still.url;
                 var movingPicture = imgArray[i].images.downsized_small.mp4;
                 var imageUrl = imgArray[i].images.stillPicture;
+                console.log((imgArray[i].rating));
+
+                var outerDiv = $("<div class='w3-card-4 gifCard'>");
+                var imgDiv = $("<img " + "src=" + stillPicture + " data-still=" + stillPicture + " data-animate=" + movingPicture + " data-state='still' class='gif' />");
+                var wordDiv = $("<div class='w3-container w3-center'>");
+                var titleTag = $("<p>" + imgArray[i].title + "</p>");
+                var ratingTag = $("<p>Rating: " + imgArray[i].rating + "</p>");
+
+                var imageCard = outerDiv.append(imgDiv).append(wordDiv).append(titleTag).append(ratingTag);
+                $(".put-gifs-here").append(imageCard);
+
+              //  $(".put-gifs-here").append();
+                //$("<p>").append().text("Rating: " + imgArray[i].rating));
                 
-                $(".put-gifs-here").append("<img " + "src=" + stillPicture + " data-still=" + stillPicture + " data-animate=" + movingPicture + " data-state='still' class='gif' />");
             }
+
 
             $(".gif").on("click", function(){
                 var state = $(this).attr("data-state");
