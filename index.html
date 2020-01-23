@@ -24,14 +24,24 @@
 <script>
 $(document).ready(function(){
 
-    var interests = ['Music', 'Language', 'Batmetal', 'Marvel', 'DC', 'Joss Whedon', 'Firefly', 'Codeing', 'Technology', 'Marching Band'];
+    var interests = ['Music', 'Language', 'Batmetal', 'Marvel', 'DC', 'Spiderverse', 'Joss Whedon', 'Firefly', 'Codeing', 'Technology', 'Marching Band', 'Music', 'Percussion', 'Space', 'Ocean', 'Analytics', 'Innovation'];
 
     $.each(interests, function(index, value){
         var interestButton = value.split(' ').join('');
-        $(".buttonControl").append("<button class='interest' '" + interestButton + "'>" + value + "</button>");
+        $(".buttonControl").append("<button class='" + interestButton + "'>" + value + "</button>");
     });
 
-    $(".interest").on("click",function(searchResults){
+    function addInterest() {
+        var extraInterest = $("#extraInterest").val();
+        interests.push(extraInterest);
+        $("<button class='" + extraInterest + "'>" + extraInterest + "</button>").appendTo(".buttonControl");
+    }
+
+    $("#addInterest").on("click", function() {
+        addInterest();
+    })
+
+    $(".buttonControl").children().on("click",function(){
         $(".put-gifs-here").empty();
         $(".interestPressed").empty();
         var interestSelected = $(this).attr("class");
@@ -47,31 +57,30 @@ $(document).ready(function(){
             url: queryURL,
             method: "GET"
         }).then(function(response) {
-            for (var i=0; i<10; i++){
                 var imgArray = response.data;
-                var imageUrl = imgArray[i].images.downsized_small.mp4;
-                $(".put-gifs-here").append("<img " + "src=" + imageUrl + " />");
+                console.log(imgArray);
+                for (var i=0; i<10; i++){
+                var stillPicture = imgArray[i].images.fixed_height_still.url;
+                var movingPicture = imgArray[i].images.downsized_small.mp4;
+                var imageUrl = imgArray[i].images.stillPicture;
+                
+                $(".put-gifs-here").append("<img " + "src=" + stillPicture + " data-still=" + stillPicture + " data-animate=" + movingPicture + " data-state='still' class='gif' />");
             }
+
+            $(".gif").on("click", function(){
+                var state = $(this).attr("data-state");
+                if(state === "still"){
+                    $(this).attr("src", $(this).attr("data-animate"));
+                    $(this).attr("data-state", "animate");
+                } else {
+                    $(this).attr("src", $(this).attr("data-still"));
+                    $(this).attr("data-state", "still");
+                }
+            });
         });
-        });
-
-    
-
-    function addInterest() {
-        var extraInterest = $("#extraInterest").val();
-        interests.push(extraInterest);
-        $("<button class='interest' '" + extraInterest + "'>" + extraInterest + "</button>").appendTo(".buttonControl");
-    }
-
-    $("#addInterest").on("click", function() {
-        addInterest();
-    })
-    
-        
-
-    
-
+    });        
 });
+
 </script>
 </body>
 </html>
