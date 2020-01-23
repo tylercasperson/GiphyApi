@@ -9,14 +9,14 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>Giffy API</title>
     <style>
-        body{
+        .put-gifs-here{
             display: flex;
             flex-wrap: wrap;
         }
-        img{
+        .gifCard{
             width: 300pt;
         }
-        .gifCard{
+        img{
             width: 300pt;
         }
     </style>
@@ -32,10 +32,10 @@
 <script>
 $(document).ready(function(){
 
-    var interests = ['Music', 'Language', 'Batmetal', 'Marvel', 'DC', 'Spiderverse', 'Joss Whedon', 'Sword Art Online', 'Firefly', 'Codeing', 'Technology', 'Marching Band', 'Music', 'Percussion', 'Symphony', 'Lacrose', 'Atalatal', 'Space', 'Ocean', 'Analytics', 'Innovation', 'Puzzle'];
+    var interests = ['Music', 'Language', 'Linguistics', 'Epic Rap Battles of History', 'Batmetal', 'Marvel', 'DC', 'Spiderverse', 'Joss Whedon', 'Sword Art Online', 'Firefly', 'Codeing', 'Technology', 'Marching Band', 'Music', 'Percussion', 'Symphony', 'Relaxing', 'Food', 'Lacrosse', 'Atlatl', 'Space', 'Ocean', 'Analytics', 'Innovation', 'Puzzle'];
 
     $.each(interests, function(index, value){
-        var interestButton = value.split(' ').join('');
+        var interestButton = value.split(' ').join('+');
         $(".buttonControl").append("<button class='" + interestButton + "'>" + value + "</button>");
     });
 
@@ -50,12 +50,13 @@ $(document).ready(function(){
     })
 
     $(".buttonControl").children().on("click",function(){
-        $(".put-gifs-here").empty();
-        $(".interestPressed").empty();
-        var interestSelected = $(this).attr("class");
+        //$(".put-gifs-here").empty();
+        //$(".interestPressed").empty();
+        var interestSelected = $(this).attr("class").split('+').join(' ');
         $(".interestPressed").text(interestSelected);
         console.log(interestSelected);
         var searchResults = interestSelected.split(' ').join('+');
+        console.log(searchResults);
         var apiKey = '341brSZeNdOBupfirSPMM0EhINDwg7tj';
         var rating = 'pg-13';
         var limit = 10;
@@ -78,15 +79,11 @@ $(document).ready(function(){
                 var wordDiv = $("<div class='w3-container w3-center'>");
                 var titleTag = $("<p>" + imgArray[i].title + "</p>");
                 var ratingTag = $("<p>Rating: " + imgArray[i].rating + "</p>");
+                var interestTag = $("<p>Interst: " + interestSelected + "</p>");
 
-                var imageCard = outerDiv.append(imgDiv).append(wordDiv).append(titleTag).append(ratingTag);
-                $(".put-gifs-here").append(imageCard);
-
-              //  $(".put-gifs-here").append();
-                //$("<p>").append().text("Rating: " + imgArray[i].rating));
-                
+                var imageCard = outerDiv.append(imgDiv).append(wordDiv).append(titleTag).append(ratingTag).append(interestTag);
+                $(".put-gifs-here").prepend(imageCard);
             }
-
 
             $(".gif").on("click", function(){
                 var state = $(this).attr("data-state");
