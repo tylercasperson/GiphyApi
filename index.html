@@ -4,101 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="./assets/css/reset.css"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="./assets/css/style.css"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./assets/javascript/index.js"></script>
     <title>Giffy API</title>
-    <style>
-        .put-gifs-here{
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .gifCard{
-            width: 300pt;
-        }
-        img{
-            width: 300pt;
-        }
-    </style>
 </head>
 <body>
     <div class="buttonControl"></div>
-    <div class="addInterest"><input type="text" id="extraInterest"><button id="addInterest">Add interest</button></div>
+    <div class="interest"><input type="text" id="extraInterest"><button id="addInterest">Add interest</button></div>
     <br>
     <div class="interestPressed"></div>
     <br>
     <div class="put-gifs-here"></div>
+    <div class="holder"></div>
     
-<script>
-$(document).ready(function(){
-
-    var interests = ['Music', 'Language', 'Linguistics', 'Epic Rap Battles of History', 'Batmetal', 'Marvel', 'DC', 'Spiderverse', 'Joss Whedon', 'Sword Art Online', 'Firefly', 'Codeing', 'Technology', 'Marching Band', 'Music', 'Percussion', 'Symphony', 'Relaxing', 'Food', 'Lacrosse', 'Atlatl', 'Space', 'Ocean', 'Analytics', 'Innovation', 'Puzzle'];
-
-    $.each(interests, function(index, value){
-        var interestButton = value.split(' ').join('+');
-        $(".buttonControl").append("<button class='" + interestButton + "'>" + value + "</button>");
-    });
-
-    function addInterest() {
-        var extraInterest = $("#extraInterest").val();
-        interests.push(extraInterest);
-        $("<button class='" + extraInterest + "'>" + extraInterest + "</button>").appendTo(".buttonControl");
-    }
-
-    $("#addInterest").on("click", function() {
-        addInterest();
-    })
-
-    $(".buttonControl").children().on("click",function(){
-        //$(".put-gifs-here").empty();
-        //$(".interestPressed").empty();
-        var interestSelected = $(this).attr("class").split('+').join(' ');
-        $(".interestPressed").text(interestSelected);
-        console.log(interestSelected);
-        var searchResults = interestSelected.split(' ').join('+');
-        console.log(searchResults);
-        var apiKey = '341brSZeNdOBupfirSPMM0EhINDwg7tj';
-        var rating = 'pg-13';
-        var limit = 10;
-        var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=" + apiKey + "&q=" + searchResults + "&limit=" + limit + "&offset=0&rating=" + rating + "&lang=en";
-
-        $.ajax({
-            url: queryURL,
-            method: "GET"
-        }).then(function(response) {
-                var imgArray = response.data;
-                console.log(imgArray);
-                for (var i=0; i<10; i++){
-                var stillPicture = imgArray[i].images.fixed_height_still.url;
-                var movingPicture = imgArray[i].images.downsized_small.mp4;
-                var imageUrl = imgArray[i].images.stillPicture;
-                console.log((imgArray[i].rating));
-
-                var outerDiv = $("<div class='w3-card-4 gifCard'>");
-                var imgDiv = $("<img " + "src=" + stillPicture + " data-still=" + stillPicture + " data-animate=" + movingPicture + " data-state='still' class='gif' />");
-                var wordDiv = $("<div class='w3-container w3-center'>");
-                var titleTag = $("<p>" + imgArray[i].title + "</p>");
-                var ratingTag = $("<p>Rating: " + imgArray[i].rating + "</p>");
-                var interestTag = $("<p>Interst: " + interestSelected + "</p>");
-
-                var imageCard = outerDiv.append(imgDiv).append(wordDiv).append(titleTag).append(ratingTag).append(interestTag);
-                $(".put-gifs-here").prepend(imageCard);
-            }
-
-            $(".gif").on("click", function(){
-                var state = $(this).attr("data-state");
-                if(state === "still"){
-                    $(this).attr("src", $(this).attr("data-animate"));
-                    $(this).attr("data-state", "animate");
-                } else {
-                    $(this).attr("src", $(this).attr("data-still"));
-                    $(this).attr("data-state", "still");
-                }
-            });
-        });
-    });        
-});
-
-</script>
 </body>
 </html>

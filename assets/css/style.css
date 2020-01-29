@@ -1,0 +1,10 @@
+.put-gifs-here{
+    display: flex;
+    flex-wrap: wrap;
+}
+.gifCard{
+    width: 300pt;
+}
+img{
+    width: 300pt;
+}
