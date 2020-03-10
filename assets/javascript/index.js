@@ -1,7 +1,6 @@
-
 $(document).ready(function(){
 
-    var interests = ['Music', 'Language', 'Linguistics', 'Epic Rap Battles of History', 'Batmetal', 'Marvel', 'DC', 'Spiderverse', 'Joss Whedon', 'Sword Art Online', 'Firefly', 'Codeing', 'Technology', 'Marching Band', 'Music', 'Percussion', 'Relaxing', 'Food', 'Lacrosse', 'Atlatl', 'Space', 'Ocean', 'Analytics', 'Innovation', 'Puzzle'];
+    var interests = ['Language', 'Linguistics', 'Batmetal', 'Marvel', 'DC', 'Spiderverse', 'Joss Whedon', 'Sword Art Online', 'Firefly', 'Codeing', 'Technology', 'Marching Band', 'Music', 'Percussion', 'Relaxing', 'Food', 'Lacrosse', 'Space', 'Ocean', 'Analytics', 'Innovation', 'Puzzle'];
 
     $.each(interests, function(index, value){
         var interestButton = value.split(' ').join('+');
@@ -19,14 +18,12 @@ $(document).ready(function(){
     })
 
     $(document).on("click", ".interestBtn", function(){
-        
         //$(".put-gifs-here").empty();
         //$(".interestPressed").empty();
-        var interestSelected = this.innerText.split(' ').join('+');
-        $(".interestPressed").text(interestSelected);
-        console.log(interestSelected);
+        var interestSelected = this.innerText.split(' ').join('');
+        var interestText = interestSelected.split('+').join(' ');
+        $(".interestPressed").text(interestText);
         var searchResults = interestSelected.split(' ').join('+');
-        console.log(searchResults);
         var apiKey = '341brSZeNdOBupfirSPMM0EhINDwg7tj';
         var rating = 'pg-13';
         var limit = 100;
@@ -37,15 +34,10 @@ $(document).ready(function(){
             method: "GET"
         }).then(function(response) {
                 var imgArray = response.data;
-                console.log(imgArray);
-                console.log((parseInt($("." + interestSelected).length))-1);
 
                 for (var i = 0; i < 10; i++){
-                    console.log('i: ' + i)
                     var stillPicture = imgArray[i].images.fixed_height_still.url;
                     var movingPicture = imgArray[i].images.fixed_height.url;
-                    // var imageUrl = imgArray[i].images.stillPicture;
-                    console.log((imgArray[i].rating));
 
                     var outerDiv = $("<div class='w3-card-4 gifCard'>");
                     var imgDiv = $("<img " + "src=" + stillPicture + " data-still=" + stillPicture + " data-animate=" + movingPicture + " data-state='still' class='gif' />");
@@ -60,34 +52,16 @@ $(document).ready(function(){
         });
     });
 
-    // $(document).on("click", ".gif", function(){
-    //     var state = $(this).attr("data-state");
-    //     console.log('state: ', state);
-    //     console.log(this);
-
-    //     if(state === "still"){
-    //         $(this).attr("src", "data-animate");
-    //         $(this).attr("data-state", "animate");
-    //     } else {
-    //         $(this).attr("src", $(this).attr("data-still"));
-    //         $(this).attr("data-state", "still");
-    //     };
-    // });
-
     $(document).on("click", ".gif", function() {
         var state = $(this).attr("data-state");
-        console.log(this);
 
         if(state === "still"){
             $(this).attr("src", $(this).attr("data-animate"));
             $(this).attr("data-state", "animate");
-            console.log('1');
         } 
         if(state === "animate") {
             $(this).attr("src", $(this).attr("data-still"));
             $(this).attr("data-state", "still");
-            console.log('2');
         }
     })
-
 });
